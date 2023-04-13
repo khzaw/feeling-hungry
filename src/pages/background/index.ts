@@ -68,6 +68,8 @@ const pickADamnThing = (vendorMenus, total: number) => {
 	return knapsack(flattenVariations, total)
 }
 
+const PRICE_THRESHOLD = 30
+
 let VENDOR_LOADED = false;
 chrome.webRequest.onCompleted.addListener(async details => {
 	// needs a better check
@@ -78,8 +80,49 @@ chrome.webRequest.onCompleted.addListener(async details => {
 			const json = await res.json();
 			const vendor = json.data;
 
-			const chosen = pickADamnThing(vendor.menus[0], 30);
+			const chosen = pickADamnThing(vendor.menus[0], PRICE_THRESHOLD);
+			const totalPrice = _.sum(chosen.map(x => x.product_variations.price));
 			console.log('CHOSEN', chosen, chosen.map(x => x.product_variations.price));
+
+			console.log('sending message');
+
+
+			chrome.tabs.query({
+				active: true,
+				currentWindow: true
+			}, (tabs) => {
+				console.log('tabs', tabs);
+				const activeTab = tabs[0];
+				if (activeTab && activeTab.id) {
+					const message = { text: 'Hello from the background script!' };
+					chrome.tabs.sendMessage(activeTab.id, message);
+				}
+			});
+
+			const vendorCart = [{
+				container_charge: 0,
+				discount_total: 0,
+				discounted_subtotal: totalPrice,
+				expedition_type: 'delivery',
+				joker_offer_id: "",
+				minimum_order_amount: PRICE_THRESHOLD - 5, // some arbitrary value
+				minimum_order_amount_difference: 5,
+				packaging_charge_details: null,
+				payable_amount: totalPrice,
+				rider_tip: 0,
+				rider_tip_percentage: 0,
+				rider_tip_type: "amount",
+				subtotal: totalPrice,
+				total_value: totalPrice,
+				vat_total: totalPrice * 0.08,
+				vendor_code: vendor.code,
+				vendor_id: vendor.id,
+				voucher: [],
+				voucher_total: null,
+				products: chosen,
+			}];
+
+			localStorage.setItem('cartoon', JSON.stringify(vendorCart));
 
 		} catch (e) {
 			console.log(e);
@@ -152,7 +195,7 @@ const submitToCart = async (products, vendor) => {
 			latitude: 1.433955,
 			longitude: 103.8412354,
 			rider_tip: {
-				type: amount,
+				type: 'amount',
 				amount: 0
 			},
 			delivery_address: {

@@ -1,9 +1,12 @@
 import { useEffect } from "react";
+import CartOrder from "@src/pages/content/components/Demo/cartorder";
 
 export default function App() {
-  useEffect(() => {
-    console.log("content view loaded");
-  }, []);
+	useEffect(() => {
+		console.log("content view loaded");
+	}, []);
 
-  return <div className="content-view">content view</div>;
+	return (
+		<CartOrder />
+	);
 }
