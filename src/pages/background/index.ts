@@ -98,5 +98,89 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
 
 
 
+const CART_URL = 'https://sg-st.fd-api.com/api/v5/rs/cart/calculate?include=expedition';
 
-console.log("background loaded");
+const submitToCart = async (products, vendor) => {
+	const p = products.map(p => ({
+		id: p.id,
+		variation_id: p.product_variations.id,
+		quantity: 1,
+		toppings: [],
+		special_instructions: "",
+		sold_out_option: "REFUND",
+		price: p.product_variations.price,
+		original_price: p.product_variations.price_before_discount,
+		variation_name: p.name,
+		menu_id: null,
+		menu_category_id: null,
+		code: p.code,
+		variation_code: p.product_variations.code
+	}));
+
+	const v = {
+		code: vendor.code,
+		hasDeliveryProvider: vendor.has_delivery_provider,
+		id: vendor.id,
+		latitude: vendor.latitude,
+		longitude: vendor.longitude,
+		marketplace: false,
+		vertical: vendor.vertical || 'restaurants'
+	}
+
+	const payload = {
+		allowanceAmount: 0,
+		participants: [],
+		voucher: null,
+		auto_apply_voucher: false,
+		supported_features: {
+			supported_banned_products_soft_fail: false
+		},
+		joker_offer_id: "",
+		vendor: v,
+		products: p,
+		payment: {
+			methods: [],
+			allowance_amount: 0,
+			loyalty: {
+				points: 0,
+				selected_promotion_id: ""
+			}
+		},
+		order_time: null,
+		expedition: {
+			type: "delivery",
+			latitude: 1.433955,
+			longitude: 103.8412354,
+			rider_tip: {
+				type: amount,
+				amount: 0
+			},
+			delivery_address: {
+				latitude: 1.433955,
+				longitude: 103.8412354
+			}
+		}
+	};
+
+	// sample token
+	const token = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImtleW1ha2VyLXZvbG8tc3RhZ2luZyIsInR5cCI6IkpXVCJ9.eyJpZCI6InVoYWNiM2pwcGJkNjh0OWd1MGNmZWQ4MTZnbDdieWsxYTJuNjFtOWIiLCJjbGllbnRfaWQiOiJ2b2xvIiwidXNlcl9pZCI6InNnb3l4cGxqIiwiZXhwaXJlcyI6MTY4MTM2NTI4NCwidG9rZW5fdHlwZSI6ImJlYXJlciIsInNjb3BlIjoiQVBJX0NVU1RPTUVSIEFQSV9SRUdJU1RFUkVEX0NVU1RPTUVSIn0.nB82Dka2jxJ7mbVfPymDNDM2TM8h0jCtu1-PVRMb-YWhSL-ztawOnkLmjMG5LODf8NX5E_hqNDkOnISrkEx36w9yR3IINxLJFNOVUqGmK-k-jKdGcNmmcWAckZk67k5uvkuPSwMsdl7qtODHIjw8vJSEgy1fCqTcSFrft8AdE06lQEE5shXcvCznoYCJt4tMjUdWYon54a6qp325iL-bMRq-le1Q_DS4sc3bofN0qYsMjU6QmrGSML56jbBJrTrSagLHdJ08nnQOPOREFjUcNhzlgXHNhc1CnPeGhF0YHOcX_vQMyfiKvcX8jL8rapnNjU0S4Xi6xUd_6Nf2_nCadw"
+
+
+	const res = await fetch(CART_URL, {
+		headers: {
+			accept: 'application/json',
+			authorization: `Bearer ${token}`,
+			"content-type": "application/json",
+			"x-fp-api-key": "volo",
+			"x-pd-language-id": "1",
+			"referrer": "https://www-st.foodpanda.sg",
+			"cache-control": "no-cache",
+			body: JSON.stringify(payload),
+			method: "POST",
+			mode: "cors",
+			credentials: "include"
+		}
+	});
+	return await res.json();
+
+}
