@@ -63,8 +63,6 @@ const pickADamnThing = (vendorMenus, total: number) => {
 		flattenMenu.map(p => p.product_variations.map(v => ({ ...p, product_variations: v }))
 		)
 	);
-
-	console.log(flattenVariations);
 	return knapsack(flattenVariations, total)
 }
 
@@ -82,47 +80,50 @@ chrome.webRequest.onCompleted.addListener(async details => {
 
 			const chosen = pickADamnThing(vendor.menus[0], PRICE_THRESHOLD);
 			const totalPrice = _.sum(chosen.map(x => x.product_variations.price));
-			console.log('CHOSEN', chosen, chosen.map(x => x.product_variations.price));
+			console.log('CHOSEN', chosen, totalPrice, chosen.map(x => x.product_variations.price));
 
 			console.log('sending message');
 
+			const vendorCart = {vendor_cart: [{
+						container_charge: 0,
+						discount_total: 0,
+						discounted_subtotal: totalPrice,
+						expedition_type: 'delivery',
+						joker_offer_id: "",
+						minimum_order_amount: PRICE_THRESHOLD - 5, // some arbitrary value
+						minimum_order_amount_difference: 5,
+						packaging_charge_details: null,
+						payable_amount: totalPrice,
+						rider_tip: 0,
+						rider_tip_percentage: 0,
+						rider_tip_type: "amount",
+						subtotal: totalPrice,
+						total_value: totalPrice,
+						vat_total: totalPrice * 0.08,
+						vendor_code: vendor.code,
+						vendor_id: vendor.id,
+						voucher: [],
+						voucher_total: null,
+						products: chosen,
+			}]};
 
 			chrome.tabs.query({
 				active: true,
 				currentWindow: true
-			}, (tabs) => {
-				console.log('tabs', tabs);
+			}, async (tabs) => {
 				const activeTab = tabs[0];
 				if (activeTab && activeTab.id) {
-					const message = { text: 'Hello from the background script!' };
-					chrome.tabs.sendMessage(activeTab.id, message);
+					const res = await chrome.tabs.sendMessage(activeTab.id, vendorCart);
+					console.log('res', res);
+					if(res !== null && res.storageSuccess){
+						// move to next page
+						console.log('updating', activeTab.id);
+						chrome.tabs.update(activeTab.id, { url: `https://www-st.foodpanda.sg/checkout/${vendor.code}/payment?opening_type=delivery`});
+					}
 				}
 			});
 
-			const vendorCart = [{
-				container_charge: 0,
-				discount_total: 0,
-				discounted_subtotal: totalPrice,
-				expedition_type: 'delivery',
-				joker_offer_id: "",
-				minimum_order_amount: PRICE_THRESHOLD - 5, // some arbitrary value
-				minimum_order_amount_difference: 5,
-				packaging_charge_details: null,
-				payable_amount: totalPrice,
-				rider_tip: 0,
-				rider_tip_percentage: 0,
-				rider_tip_type: "amount",
-				subtotal: totalPrice,
-				total_value: totalPrice,
-				vat_total: totalPrice * 0.08,
-				vendor_code: vendor.code,
-				vendor_id: vendor.id,
-				voucher: [],
-				voucher_total: null,
-				products: chosen,
-			}];
 
-			localStorage.setItem('cartoon', JSON.stringify(vendorCart));
 
 		} catch (e) {
 			console.log(e);
@@ -133,8 +134,10 @@ chrome.webRequest.onCompleted.addListener(async details => {
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
 	console.log("onBeforeRequest", details.url, details);
+	if(details.requestBody.raw) {
 	const postedString = decodeURIComponent(String.fromCharCode.apply(null, new Uint8Array(details.requestBody.raw[0].bytes)));
 	console.log("postedString", postedString);
+	}
 }, {
 	urls: ['*://*.fd-api.com/api/v5/rs/cart/calculate*'],
 }, ['requestBody', 'extraHeaders']);

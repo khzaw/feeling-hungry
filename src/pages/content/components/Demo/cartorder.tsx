@@ -5,12 +5,16 @@ export default function CartOrder() {
 
 		console.log('CartOrder');
 
-		const handleMessage = (
+		const handleMessage =  (
 			message: any,
 			sender: chrome.runtime.MessageSender,
-			senderResponse: (response?: any) => void
+			sendResponse: (response?: any) => void
 		) => {
-			console.log('Message received in content script:', message, sender, senderResponse);
+			console.log('Message received in content script:', message, sender, sendResponse);
+			if(message !== null) {
+				localStorage.setItem('cart', JSON.stringify(message));
+				sendResponse({ storageSuccess: true });
+			}
 		}
 		chrome.runtime.onMessage.addListener(handleMessage);
 
