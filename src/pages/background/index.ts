@@ -130,8 +130,9 @@ chrome.webRequest.onCompleted.addListener(async details => {
 
 			chrome.tabs.query({
 				active: true,
-				currentWindow: true
+				currentWindow: true,
 			}, async (tabs) => {
+				console.log('tabs', tabs);
 				const activeTab = tabs[0];
 				if (activeTab && activeTab.id) {
 					const res = await chrome.tabs.sendMessage(activeTab.id, vendorCart);

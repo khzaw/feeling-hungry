@@ -7,9 +7,9 @@ import fpDesignTokens from '@deliveryhero/pd-bento-design-tokens/web/js/fp'; // 
 console.log('body: ', document.body);
 
 if (document.body) {
-    Object.keys(fpDesignTokens).forEach(colorKey => {
-        document.body.style.setProperty(`--${colorKey}`, fpDesignTokens[colorKey]);
-    });
+	Object.keys(fpDesignTokens).forEach(colorKey => {
+		document.body.style.setProperty(`--${colorKey}`, fpDesignTokens[colorKey]);
+	});
 }
 
 refreshOnUpdate("pages/content");
@@ -19,20 +19,28 @@ root.id = "chrome-extension-boilerplate-react-vite-content-view-root";
 document.body.append(root);
 
 
-const formButtonContainer = document.getElementsByClassName('button-container')[0]
-// formButtonContainer.setAttribute('id', 'form-container')
-// const formContainer = document.getElementById('form-container'); // Global parent
-formButtonContainer.classList.remove('two-buttons');
-formButtonContainer.classList.add('three-buttons');
+if (window.location.href === 'https://www-st.foodpanda.sg/') {
+	const formButtonContainer = document.getElementsByClassName('button-container')[0]
+	// formButtonContainer.setAttribute('id', 'form-container')
+	// const formContainer = document.getElementById('form-container'); // Global parent
+	if (formButtonContainer && formButtonContainer.classList) {
+		formButtonContainer.classList.remove('two-buttons');
+		formButtonContainer.classList.add('three-buttons');
+	}
 
-const orSpan = document.createElement('span');
-orSpan.classList.add('button-text-separator');
-orSpan.textContent = 'or';
-formButtonContainer.appendChild(orSpan);
+	const orSpan = document.createElement('span');
+	orSpan.classList.add('button-text-separator');
+	orSpan.textContent = 'or';
+	if (formButtonContainer) {
+		formButtonContainer.appendChild(orSpan);
+	}
 
-const buttonDiv = document.createElement('div');
-buttonDiv.classList.add('surprise-me-button');
-formButtonContainer.appendChild(buttonDiv);
+	const buttonDiv = document.createElement('div');
+	buttonDiv.classList.add('surprise-me-button');
+	if (formButtonContainer) {
+		formButtonContainer.appendChild(buttonDiv);
+	}
+}
 
 // console.log('formContainer', formContainer);
 // if (formContainer) {
@@ -43,11 +51,11 @@ formButtonContainer.appendChild(buttonDiv);
 
 
 function injectScript() {
-    const script = document.createElement('script');
-    script.textContent = `
+	const script = document.createElement('script');
+	script.textContent = `
       window.global = window;
   `;
-    document.documentElement.appendChild(script);
+	document.documentElement.appendChild(script);
 }
 injectScript();
 
