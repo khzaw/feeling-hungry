@@ -104,10 +104,17 @@ chrome.webRequest.onCompleted.addListener(async details => {
 			console.log('sending message');
 
 			const vendorCart = {
+				minimum_order_amount: 15,
+				payable_amount: totalPrice,
+				original_delivery_fee: 3.99,
+				total_value: totalPrice,
+				subtotal: totalPrice,
+				subtotal_before_discount: totalPrice,
+				total_without_difference_to_minimum_order: totalPrice,
+				vat_total_without_difference_to_minimum_order: totalPrice,
 				vendor_cart: [{
 					container_charge: 0,
 					discount_total: 0,
-					discounted_subtotal: totalPrice,
 					expedition_type: 'delivery',
 					joker_offer_id: "",
 					minimum_order_amount: PRICE_THRESHOLD - 5, // some arbitrary value
@@ -118,6 +125,7 @@ chrome.webRequest.onCompleted.addListener(async details => {
 					rider_tip_percentage: 0,
 					rider_tip_type: "amount",
 					subtotal: totalPrice,
+					subtotal_before_discount: totalPrice,
 					total_value: totalPrice,
 					vat_total: totalPrice * 0.08,
 					vendor_code: vendor.code,
