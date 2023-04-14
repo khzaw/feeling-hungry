@@ -78,7 +78,7 @@ const prepareProductsForCheckout = (chosenProducts) => {
 		product_variation_id: p.product_variations.id,
 		product_id: p.id,
 		id: p.id,
-		variation_name: "",
+		variation_name: p.name,
 		original_price: p.product_variations.price,
 		price: p.product_variations.price,
 		variation_id: p.product_variations.id,
