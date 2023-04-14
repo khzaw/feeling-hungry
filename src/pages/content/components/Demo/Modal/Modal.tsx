@@ -95,9 +95,7 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
     }
 
     const handleSubmit = () => {
-        console.log(selectedCuisines)
-        const selectedCuisineIds = selectedCuisines.map(cuisine => cuisine.id);
-        console.log('selectedCuisineIds: ', selectedCuisineIds)
+        setSubmitLoading('loading')
         var allowedVendors = allVendors;
         const randIdx = pickRandomIdx(allowedVendors.length)
         redirectToVendor(allowedVendors[randIdx].code, allowedVendors[randIdx].url_key, priceLimit)
@@ -144,7 +142,7 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
                     Surprise me
                 </Button>
             </ModalFooter>
-        </Modal>
+        </Modal >
     );
 }
 
