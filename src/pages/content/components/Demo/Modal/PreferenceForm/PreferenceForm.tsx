@@ -3,6 +3,7 @@ import { Slider } from '@deliveryhero/pd-cookbook/components/Slider';
 import { Dropdown, DropdownOptionType } from '@deliveryhero/pd-cookbook/components/Dropdown';
 import { Dispatch, SetStateAction } from 'react';
 import { Box } from '@deliveryhero/pd-cookbook/components/Box';
+import { TextInput } from '@deliveryhero/pd-cookbook/components/TextInput';
 
 interface Cuisine {
     id: number
@@ -43,7 +44,7 @@ const PreferenceForm: React.FC<Props> = ({
                 required
                 step={1}
                 tooltipText=""
-                value={30}
+                value={priceLimit}
                 onChange={(detail) => setPriceLimit(parseInt(detail.target.value))}
             />
             <Slider

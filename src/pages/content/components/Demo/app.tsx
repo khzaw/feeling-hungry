@@ -6,6 +6,7 @@ import './app.scss';
 import { ButtonCircular } from "@deliveryhero/pd-cookbook/components/ButtonCircular";
 import IcBackPack from '@deliveryhero/pd-cookbook/components/Icons/IcBackPack';
 import '../../style.scss'
+import { callbackify } from "util";
 
 interface IFetchVendorResponse {
 
@@ -48,6 +49,10 @@ export default function App() {
       });
   }
 
+  const handleClose = (callback: any) => {
+    setModalOpen(false);
+    callback()
+  }
 
   return (
     <div className="content-view">
@@ -56,7 +61,7 @@ export default function App() {
       </Button>
       <PDModal
         open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={handleClose}
         allCuisines={allCuisines}
         allVendors={allVendors}
       />

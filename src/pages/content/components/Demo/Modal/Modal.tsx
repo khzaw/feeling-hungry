@@ -118,11 +118,8 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
             <ModalBody>
                 <Box marginBottom="sm">
                     <Typography as="p" type="paragraph-md">
-                        There are <b>{allowedVendors.length}</b> restaurants meeting your criterias
-                    </Typography>
-                    {/* <Typography as="p" type="paragraph-md">
                         Get ready for a unique culinary adventure every time you order with our new random menu generator! With a single click, you’ll be presented with a mouth-watering selection of dishes that will take your taste buds on a journey they’ll never forget.
-                    </Typography> */}
+                    </Typography>
                 </Box>
                 <PreferenceForm
                     cuisinesDropDownValue={mapCuisinesToDropDownValue(allCuisines)}
@@ -133,6 +130,12 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
                     priceLimit={priceLimit}
                     deliveryTime={deliveryTime}
                 />
+                <Box marginTop="sm">
+                    <Typography as="i" type="label-sm">
+                        There are <b>{allowedVendors.length}</b> restaurants meeting your criterias.
+                    </Typography>
+                </Box>
+
             </ModalBody>
             <ModalFooter>
                 <Button kind="primary-reversed" onClick={onClose} style={{ marginRight: '20px' }}>
