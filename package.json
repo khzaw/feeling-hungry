@@ -17,9 +17,15 @@
   },
   "type": "module",
   "dependencies": {
+    "@deliveryhero/armor": "^1.117.1",
+    "@deliveryhero/armor-icons": "^1.29.1",
+    "@deliveryhero/armor-motion": "^1.3.7",
+    "@deliveryhero/pd-bento-design-tokens": "1.13.2",
+    "@deliveryhero/pd-cookbook": "23.14.3",
     "lodash": "^4.17.21",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "styled-components": "^5.3.9"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.5.0",

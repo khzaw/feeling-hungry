@@ -1,4 +1,38 @@
 @import "@assets/style/theme.scss";
+@import "@deliveryhero/pd-bento-design-tokens/web/scss/fp"; // Brand theme to import
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/inputs';
+@import '@deliveryhero/pd-cookbook/assets/scss/helpers/utility-classes';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/pill';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/tag';
+
+@import '@deliveryhero/pd-cookbook/assets/scss/helpers/_corner-radius.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/helpers/_spacing.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/helpers/_utility-classes.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/helpers/_colors.scss';
+
+@import '@deliveryhero/pd-cookbook/assets/scss/helpers/_general-helpers.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/helpers/_typography-mixin.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/helpers/_grid-mixins.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_drop-down.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_buttons.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_switch.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_buttons.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_divider.scss';
+
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_drop-down.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_buttons.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_switch.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_inputs.scss';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_button-toggle';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_radio-buttons';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_checkboxes';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_message';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/_tag';
+
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/brand-tag';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/pill';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/slider';
+@import '@deliveryhero/pd-cookbook/assets/scss/elements/drop-down';
 
 .content-view {
   font-size: 30px;
