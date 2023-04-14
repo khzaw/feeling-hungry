@@ -12,16 +12,22 @@ interface Cuisine {
 
 interface Props {
     cuisinesDropDownValue: DropdownOptionType[]
-    setPriceLimit: Dispatch<SetStateAction<string>>
+    setPriceLimit: Dispatch<SetStateAction<number>>
+    setDeliveryTime: Dispatch<SetStateAction<number>>
     setSelectedCuisines: Dispatch<SetStateAction<Cuisine[]>>
     selectedCuisines: Cuisine[]
+    priceLimit: number
+    deliveryTime: number
 }
 
 const PreferenceForm: React.FC<Props> = ({
     cuisinesDropDownValue,
     setPriceLimit,
     setSelectedCuisines,
+    setDeliveryTime,
     selectedCuisines,
+    priceLimit,
+    deliveryTime,
 }) => {
     return (
         <>
@@ -38,8 +44,24 @@ const PreferenceForm: React.FC<Props> = ({
                 step={1}
                 tooltipText=""
                 value={30}
-                onChange={(detail) => setPriceLimit(detail.target.value)}
+                onChange={(detail) => setPriceLimit(parseInt(detail.target.value))}
             />
+            <Slider
+                boxClassName=""
+                id="delivery-time-limit"
+                inputClassName=""
+                label="Maximum Delivery Time"
+                labelLeft="25 mins"
+                labelRight="60 mins"
+                max={60}
+                min={25}
+                required
+                step={1}
+                tooltipText=""
+                value={deliveryTime}
+                onChange={(detail) => setDeliveryTime(parseInt(detail.target.value))}
+            />
+
             <Dropdown
                 id="test"
                 onChange={(detail) => setSelectedCuisines(prevCuisines => [...prevCuisines, {
