@@ -66,6 +66,25 @@ const pickADamnThing = (vendorMenus, total: number) => {
 	return knapsack(flattenVariations, total)
 }
 
+// reshape the data
+const prepareProductsForCheckout = (chosenProducts) => {
+	return chosenProducts.map(p => ({
+		is_available: true,
+		total_price: p.product_variations.price,
+		total_price_before_discount: p.product_variations.price,
+		quantity: 1,
+		special_instructions: '',
+		toppings: [],
+		product_variation_id: p.product_variations.id,
+		product_id: p.id,
+		id: p.id,
+		variation_name: "",
+		original_price: p.product_variations.price,
+		price: p.product_variations.price,
+		variation_id: p.product_variations.id,
+	}));
+}
+
 const PRICE_THRESHOLD = 30
 
 let VENDOR_LOADED = false;
@@ -84,28 +103,30 @@ chrome.webRequest.onCompleted.addListener(async details => {
 
 			console.log('sending message');
 
-			const vendorCart = {vendor_cart: [{
-						container_charge: 0,
-						discount_total: 0,
-						discounted_subtotal: totalPrice,
-						expedition_type: 'delivery',
-						joker_offer_id: "",
-						minimum_order_amount: PRICE_THRESHOLD - 5, // some arbitrary value
-						minimum_order_amount_difference: 5,
-						packaging_charge_details: null,
-						payable_amount: totalPrice,
-						rider_tip: 0,
-						rider_tip_percentage: 0,
-						rider_tip_type: "amount",
-						subtotal: totalPrice,
-						total_value: totalPrice,
-						vat_total: totalPrice * 0.08,
-						vendor_code: vendor.code,
-						vendor_id: vendor.id,
-						voucher: [],
-						voucher_total: null,
-						products: chosen,
-			}]};
+			const vendorCart = {
+				vendor_cart: [{
+					container_charge: 0,
+					discount_total: 0,
+					discounted_subtotal: totalPrice,
+					expedition_type: 'delivery',
+					joker_offer_id: "",
+					minimum_order_amount: PRICE_THRESHOLD - 5, // some arbitrary value
+					minimum_order_amount_difference: 5,
+					packaging_charge_details: null,
+					payable_amount: totalPrice,
+					rider_tip: 0,
+					rider_tip_percentage: 0,
+					rider_tip_type: "amount",
+					subtotal: totalPrice,
+					total_value: totalPrice,
+					vat_total: totalPrice * 0.08,
+					vendor_code: vendor.code,
+					vendor_id: vendor.id,
+					voucher: [],
+					voucher_total: null,
+					products: prepareProductsForCheckout(chosen),
+				}]
+			};
 
 			chrome.tabs.query({
 				active: true,
@@ -115,10 +136,10 @@ chrome.webRequest.onCompleted.addListener(async details => {
 				if (activeTab && activeTab.id) {
 					const res = await chrome.tabs.sendMessage(activeTab.id, vendorCart);
 					console.log('res', res);
-					if(res !== null && res.storageSuccess){
+					if (res !== null && res.storageSuccess) {
 						// move to next page
 						console.log('updating', activeTab.id);
-						chrome.tabs.update(activeTab.id, { url: `https://www-st.foodpanda.sg/checkout/${vendor.code}/payment?opening_type=delivery`});
+						chrome.tabs.update(activeTab.id, { url: `https://www-st.foodpanda.sg/checkout/${vendor.code}/payment?opening_type=delivery` });
 					}
 				}
 			});
@@ -134,9 +155,9 @@ chrome.webRequest.onCompleted.addListener(async details => {
 
 chrome.webRequest.onBeforeRequest.addListener(details => {
 	console.log("onBeforeRequest", details.url, details);
-	if(details.requestBody.raw) {
-	const postedString = decodeURIComponent(String.fromCharCode.apply(null, new Uint8Array(details.requestBody.raw[0].bytes)));
-	console.log("postedString", postedString);
+	if (details.requestBody.raw) {
+		const postedString = decodeURIComponent(String.fromCharCode.apply(null, new Uint8Array(details.requestBody.raw[0].bytes)));
+		console.log("postedString", postedString);
 	}
 }, {
 	urls: ['*://*.fd-api.com/api/v5/rs/cart/calculate*'],
