@@ -51,7 +51,7 @@ export default function App() {
       <CartOrder />
       <div className="content-view">
         <Button className="content-view" onClick={handleClick} status={loading}>
-          Feeling Hungry
+          Surprise me
         </Button>
         <PDModal
           open={modalOpen}
