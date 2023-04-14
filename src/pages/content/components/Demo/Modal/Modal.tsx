@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Button, { ButtonStatusType } from '@deliveryhero/pd-cookbook/components/Button';
 import { PreferenceForm } from './PreferenceForm';
 import { Typography } from '@deliveryhero/pd-cookbook/components/Typography';
+import { Switch } from '@deliveryhero/pd-cookbook/components/Switch';
 import Box from '@deliveryhero/pd-cookbook/components/Box';
 import Modal, { ModalBody, ModalFooter, ModalTitle } from '@deliveryhero/pd-cookbook/components/AccessibleModal';
 import { DropdownOptionType } from '@deliveryhero/pd-cookbook/components/Dropdown';
@@ -125,10 +126,16 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
                     priceLimit={priceLimit}
                     deliveryTime={deliveryTime}
                 />
-                <Box marginTop="sm">
+                <Box marginTop="sm" justifyContent="space-between" direction="row">
                     <Typography as="p" type="label-md">
                         There are <b>{allowedVendors.length}</b> restaurants meeting your criterias.
                     </Typography>
+                    <Switch
+                        className="test-1"
+                        id="test-1"
+                        label="Save configuration"
+                        checked
+                    />
                 </Box>
             </ModalBody>
             <ModalFooter>
