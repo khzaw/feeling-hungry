@@ -48,7 +48,7 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
     }
 
     const redirectToVendor = (vendorCode: string, urlKey: string, priceLimit: string) => {
-        window.location.href = `/restaurant/${vendorCode}/${urlKey}?priceLimit=${priceLimit}}`;
+        window.location.href = `/restaurant/${vendorCode}/${urlKey}?priceLimit=${priceLimit}`;
     }
 
     const handleSubmit = () => {
