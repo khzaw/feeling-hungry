@@ -52,17 +52,17 @@ export default function App() {
   return (
 		<>
 			<CartOrder />
-    <div className="content-view">
-      <Button className="content-view" onClick={handleClick} status={loading}>
-        Feeling Hungry
-      </Button>
-      <PDModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        allCuisines={allCuisines}
-        allVendors={allVendors}
-      />
-    </div>
+			<div className="content-view">
+				<Button className="content-view" onClick={handleClick} status={loading}>
+					Feeling Hungry
+				</Button>
+				<PDModal
+					open={modalOpen}
+					onClose={() => setModalOpen(false)}
+					allCuisines={allCuisines}
+					allVendors={allVendors}
+				/>
+			</div>
 		</>
   );
 }
