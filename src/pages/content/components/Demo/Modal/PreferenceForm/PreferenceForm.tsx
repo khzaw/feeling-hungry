@@ -3,6 +3,8 @@ import { Slider } from '@deliveryhero/pd-cookbook/components/Slider';
 import { Dropdown, DropdownOptionType } from '@deliveryhero/pd-cookbook/components/Dropdown';
 import { Dispatch, SetStateAction } from 'react';
 import { Box } from '@deliveryhero/pd-cookbook/components/Box';
+import { Pill } from '@deliveryhero/pd-cookbook/components/Pill';
+import Typography from '@deliveryhero/pd-cookbook/components/Typography';
 
 interface Cuisine {
     id: number
@@ -19,6 +21,17 @@ interface Props {
     priceLimit: number
     deliveryTime: number
 }
+
+const dealBreakers = [
+    {
+        id: 108,
+        label: 'Halal',
+    },
+    {
+        id: 58,
+        label: 'Vegetarian',
+    },
+]
 
 const PreferenceForm: React.FC<Props> = ({
     cuisinesDropDownValue,
@@ -62,20 +75,36 @@ const PreferenceForm: React.FC<Props> = ({
                 onChange={(detail) => setDeliveryTime(parseInt(detail.target.value))}
             />
 
-            <Dropdown
-                id="test"
-                onChange={(detail) => setSelectedCuisines(prevCuisines => [...prevCuisines, {
-                    id: parseInt(detail.value) ?? 0,
-                    title: detail.label ?? '',
-                    url_key: '',
-                }])}
-                options={cuisinesDropDownValue}
-                zIndex={10}
-            />
-            <Box direction="row">
-                {selectedCuisines.map((cuisine) => (
-                    <Tag id={cuisine.id.toString()} label={cuisine.title} />
-                ))}
+            <Box marginTop="md">
+                <Typography as="p" type="label-md">
+                    Deal-breakers
+                </Typography>
+
+                <div style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '1rem',
+                    marginTop: '1rem',
+                }}>
+                    {dealBreakers.map(dealBreaker => (
+                        <Pill
+                            id={dealBreaker.id.toString()}
+                            label={dealBreaker.label}
+                            checked={selectedCuisines.map(cuisine => cuisine.id).includes(dealBreaker.id)}
+                            onChange={() => {
+                                if (!selectedCuisines.map(cuisine => cuisine.id).includes(dealBreaker.id)) {
+                                    setSelectedCuisines(prevState => [...prevState, {
+                                        id: dealBreaker.id,
+                                        title: dealBreaker.label,
+                                    }]);
+                                } else {
+                                    const filteredCuisines = selectedCuisines.filter(cuisine => cuisine.id !== dealBreaker.id)
+                                    setSelectedCuisines(filteredCuisines);
+                                }
+                            }}
+                        />
+                    ))}
+                </div>
             </Box>
         </>
     );

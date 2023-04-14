@@ -17,7 +17,7 @@ refreshOnUpdate("pages/content");
 const root = document.createElement("div");
 root.id = "chrome-extension-boilerplate-react-vite-content-view-root";
 document.body.append(root);
-
+var buttonDiv
 
 if (window.location.href === 'https://www-st.foodpanda.sg/') {
 	const formButtonContainer = document.getElementsByClassName('button-container')[0]
@@ -35,7 +35,7 @@ if (window.location.href === 'https://www-st.foodpanda.sg/') {
 		formButtonContainer.appendChild(orSpan);
 	}
 
-	const buttonDiv = document.createElement('div');
+	buttonDiv = document.createElement('div');
 	buttonDiv.classList.add('surprise-me-button');
 	if (formButtonContainer) {
 		formButtonContainer.appendChild(buttonDiv);

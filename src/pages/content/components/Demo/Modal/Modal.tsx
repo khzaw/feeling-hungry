@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react';
-import { fetchVendorListing } from '../../../../../../source/Service/listVendor';
-import Button, { ButtonProps, ButtonStatusType } from '@deliveryhero/pd-cookbook/components/Button';
+import Button, { ButtonStatusType } from '@deliveryhero/pd-cookbook/components/Button';
 import { PreferenceForm } from './PreferenceForm';
 import { Typography } from '@deliveryhero/pd-cookbook/components/Typography';
 import Box from '@deliveryhero/pd-cookbook/components/Box';
 import Modal, { ModalBody, ModalFooter, ModalTitle } from '@deliveryhero/pd-cookbook/components/AccessibleModal';
-import { Pill } from '@deliveryhero/pd-cookbook/components/Pill';
-import { LoadingDotsIndicator } from '@deliveryhero/pd-cookbook/components/LoadingDotsIndicator';
-import IcBackPack from '@deliveryhero/pd-cookbook/components/Icons/IcBackPack';
-import { Tooltip } from '@deliveryhero/pd-cookbook/components/Tooltip';
 import { DropdownOptionType } from '@deliveryhero/pd-cookbook/components/Dropdown';
 
 interface Props {
@@ -39,7 +34,6 @@ interface Vendor {
 }
 
 const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) => {
-    const [loading, setLoading] = useState(false);
     const [submitLoading, setSubmitLoading] = useState<ButtonStatusType>('default');
     const [priceLimit, setPriceLimit] = useState<number>(30);
     const [deliveryTime, setDeliveryTime] = useState<number>(50);
@@ -72,6 +66,7 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
                 if (vendor.minimum_delivery_time <= deliveryTime) {
                     foundDeliveryTime = true
                 }
+
 
                 if (selectedCuisines.length > 0 && vendor.characteristics.cuisines && vendor.characteristics.cuisines.length > 0) {
                     const found = vendor.characteristics.cuisines.filter((cuisine: Cuisine) => {
@@ -118,11 +113,8 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
             <ModalBody>
                 <Box marginBottom="sm">
                     <Typography as="p" type="paragraph-md">
-                        There are <b>{allowedVendors.length}</b> restaurants meeting your criterias
+                        Get ready for a unique culinary adventure every time you order with our new surprise menu feature! With a single click, you’ll be presented with a mouth-watering selection of dishes that will take your taste buds on a journey they’ll never forget.
                     </Typography>
-                    {/* <Typography as="p" type="paragraph-md">
-                        Get ready for a unique culinary adventure every time you order with our new random menu generator! With a single click, you’ll be presented with a mouth-watering selection of dishes that will take your taste buds on a journey they’ll never forget.
-                    </Typography> */}
                 </Box>
                 <PreferenceForm
                     cuisinesDropDownValue={mapCuisinesToDropDownValue(allCuisines)}
@@ -133,6 +125,11 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
                     priceLimit={priceLimit}
                     deliveryTime={deliveryTime}
                 />
+                <Box marginTop="sm">
+                    <Typography as="p" type="label-md">
+                        There are <b>{allowedVendors.length}</b> restaurants meeting your criterias.
+                    </Typography>
+                </Box>
             </ModalBody>
             <ModalFooter>
                 <Button kind="primary-reversed" onClick={onClose} style={{ marginRight: '20px' }}>
