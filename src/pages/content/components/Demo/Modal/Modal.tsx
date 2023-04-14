@@ -43,25 +43,26 @@ const PDModal: React.FC<Props> = ({ open, onClose, allCuisines, allVendors }) =>
     const [priceLimit, setPriceLimit] = useState<string>('30');
     const [selectedCuisines, setSelectedCuisines] = useState<Cuisine[]>([]);
 
-    const pickRandomVendor = (vendorCodes: string[]): string => {
-        const randomIdx = Math.floor(Math.random() * vendorCodes.length);
-        return vendorCodes[randomIdx]
+    const pickRandomIdx = (n: number): number => {
+        return Math.floor(Math.random() * n);
     }
 
-    const redirectToVendor = (vendorCode: string, priceLimit: string) => {
-        window.location.href = `/restaurant/${vendorCode}`;
+    const redirectToVendor = (vendorCode: string, urlKey: string, priceLimit: string) => {
+        window.location.href = `/restaurant/${vendorCode}/${urlKey}?priceLimit=${priceLimit}}`;
     }
 
     const handleSubmit = () => {
-        const allowedVendors: string[] = allVendors.map((vendor) => vendor.code);
-        const randVendor = pickRandomVendor(allowedVendors)
-        redirectToVendor(randVendor, priceLimit)
+        const allowedVendors = allVendors
+            .filter(vendor => vendor) // TODO: Filter criterias
+        const randIdx = pickRandomIdx(allowedVendors.length)
+        redirectToVendor(allowedVendors[randIdx].code, allowedVendors[randIdx].url_key, priceLimit)
     }
 
     const mapCuisinesToDropDownValue = (cuisines: Cuisine[]): DropdownOptionType[] => {
         return cuisines.map((cuisine) => ({
             label: cuisine.title,
             value: cuisine.id.toString(),
+            urlKey: cuisine.url_key
         }))
     }
 
